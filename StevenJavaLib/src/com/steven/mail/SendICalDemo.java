@@ -19,15 +19,21 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
 
+/**
+ * 发送会议提醒
+ * 
+ * @author steven
+ *
+ */
 public class SendICalDemo {
 
 	public static void main(String[] args) {
-		
+
 		final String username = "XX@163.com";
 		final String password = "XX";
 		String from = "XX@163.com";
 		String to = "XX@163.com";
-		
+
 		boolean isSSL = true;
 		String host = "smtp.163.com";
 		int port = 465;
@@ -53,29 +59,21 @@ public class SendICalDemo {
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
 			message.setSubject("Outlook Meeting Request Using JavaMail");
 			StringBuffer buffer = new StringBuffer();
-			buffer.append("BEGIN:VCALENDAR\n"
-					+ "PRODID:-//Microsoft Corporation//Outlook 9.0 MIMEDIR//EN\n"
-					+ "VERSION:2.0\n"
-					+ "METHOD:REQUEST\n"
-					+ "BEGIN:VEVENT\n"
-					+ "ATTENDEE;ROLE=REQ-PARTICIPANT;RSVP=TRUE:MAILTO:"+to+"\n"
-					+ "ORGANIZER:MAILTO:"+to+"\n"
-					+ "DTSTART:20150818T060000Z\n"
-					+ "DTEND:20150819T070000Z\n"
-					+ "LOCATION:Conference room\n"
-					+ "UID:"+UUID.randomUUID().toString()+"\n"//如果id相同的话，outlook会认为是同一个会议请求，所以使用uuid。
+			buffer.append("BEGIN:VCALENDAR\n" + "PRODID:-//Microsoft Corporation//Outlook 9.0 MIMEDIR//EN\n"
+					+ "VERSION:2.0\n" + "METHOD:REQUEST\n" + "BEGIN:VEVENT\n"
+					+ "ATTENDEE;ROLE=REQ-PARTICIPANT;RSVP=TRUE:MAILTO:" + to + "\n" + "ORGANIZER:MAILTO:" + to + "\n"
+					+ "DTSTART:20150818T060000Z\n" + "DTEND:20150819T070000Z\n" + "LOCATION:Conference room\n" + "UID:"
+					+ UUID.randomUUID().toString() + "\n"// 如果id相同的话，outlook会认为是同一个会议请求，所以使用uuid。
 					+ "CATEGORIES:SuccessCentral Reminder\n"
 					+ "DESCRIPTION:This the description of the meeting.<br>asd;flkjasdpfi\n\n"
-					+ "SUMMARY:Test meeting request\n" + "PRIORITY:5\n"
-					+ "CLASS:PUBLIC\n" + "BEGIN:VALARM\n"
-					+ "TRIGGER:-PT15M\n" + "ACTION:DISPLAY\n"
-					+ "DESCRIPTION:Reminder\n" + "END:VALARM\n"
+					+ "SUMMARY:Test meeting request\n" + "PRIORITY:5\n" + "CLASS:PUBLIC\n" + "BEGIN:VALARM\n"
+					+ "TRIGGER:-PT15M\n" + "ACTION:DISPLAY\n" + "DESCRIPTION:Reminder\n" + "END:VALARM\n"
 					+ "END:VEVENT\n" + "END:VCALENDAR");
 			BodyPart messageBodyPart = new MimeBodyPart();
 			// 测试下来如果不这么转换的话，会以纯文本的形式发送过去，
-			//如果没有method=REQUEST;charset=\"UTF-8\"，outlook会议附件的形式存在，而不是直接打开就是一个会议请求
-			messageBodyPart.setDataHandler(new DataHandler(new ByteArrayDataSource(buffer.toString(), 
-					"text/calendar;method=REQUEST;charset=\"UTF-8\"")));
+			// 如果没有method=REQUEST;charset=\"UTF-8\"，outlook会议附件的形式存在，而不是直接打开就是一个会议请求
+			messageBodyPart.setDataHandler(new DataHandler(
+					new ByteArrayDataSource(buffer.toString(), "text/calendar;method=REQUEST;charset=\"UTF-8\"")));
 			Multipart multipart = new MimeMultipart();
 			multipart.addBodyPart(messageBodyPart);
 			message.setContent(multipart);
