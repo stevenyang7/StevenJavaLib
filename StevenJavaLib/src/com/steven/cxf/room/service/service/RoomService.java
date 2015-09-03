@@ -23,12 +23,12 @@ import com.steven.cxf.room.service.po.Room;
  *
  */
 @Path("/roomservice")
-@Produces("application/xml")
+@Produces({"application/json","application/xml"})
 public class RoomService {
 
 	@GET
 	@Path("/room/{id}")
-	@Consumes("application/xml")
+	@Consumes({"application/json","application/xml"})
 	public Room getRoom(@PathParam("id") String id) {
 		System.out.println("get room by id= " + id);
 		Room room = RoomDAO.getRoom(id);
@@ -37,7 +37,7 @@ public class RoomService {
 
 	@GET
 	@Path("/room")
-	@Consumes("application/xml")
+	@Consumes({"application/json","application/xml"})
 	public Rooms getAllRoom() {
 		System.out.println("get all room");
 		Rooms rooms = RoomDAO.getRooms();
@@ -46,7 +46,7 @@ public class RoomService {
 
 	@POST
 	@Path("/room")
-	@Consumes("application/xml")
+	@Consumes({"application/json","application/xml"})
 	public void addRoom(Room room) {
 		System.out.println("add room which id is:" + room.getId());
 		RoomDAO.addRoom(room);
@@ -54,7 +54,7 @@ public class RoomService {
 
 	@PUT
 	@Path("/room/{id}")
-	@Consumes("application/xml")
+	@Consumes({"application/json","application/xml"})
 	public void updateRoom(@PathParam("id") String id, Room room) {
 		System.out.println("update room which original id is:" + room.getId());
 		RoomDAO.updateRoom(id, room);
@@ -62,7 +62,7 @@ public class RoomService {
 
 	@DELETE
 	@Path("/room/{id}")
-	@Consumes("application/xml")
+	@Consumes({"application/json","application/xml"})
 	public void deleteRoom(@PathParam("id") String id) {
 		System.out.println("remove room by id= " + id);
 		RoomDAO.deleteRoom(id);
@@ -70,7 +70,7 @@ public class RoomService {
 
 	@POST
 	@Path("/room/{id}")
-	@Consumes("application/xml")
+	@Consumes({"application/json","application/xml"})
 	public void addPerson(@PathParam("id") String id, Person person) {
 		System.out.println("add person who's name is:" + person.getName());
 		RoomDAO.addPerson(id, person);
@@ -78,7 +78,7 @@ public class RoomService {
 
 	@DELETE
 	@Path("/room/{id}/{name}")
-	@Consumes("application/xml")
+	@Consumes({"application/json","application/xml"})
 	public void deletePerson(@PathParam("id") String id, @PathParam("name") String name) {
 		System.out.println("remove person who's name is: " + name);
 		RoomDAO.deletePerson(id, name);
